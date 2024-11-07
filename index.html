@@ -95,7 +95,10 @@ function publishMessage(topic, message) {
             });
 
             mqttClient.on('message', (topic, message) => {
-                console.log("Mensaje recibido: " + message.toString());
+              if (topic === "mensajesESP") {
+                    document.getElementById("espMessages").innerText = message.toString();
+                    document.getElementById("messageBox").style.display = "block";
+                }
                 if (unityInstance) {
                     unityInstance.SendMessage('Player', 'OnMessageReceived', message.toString());
                 }
