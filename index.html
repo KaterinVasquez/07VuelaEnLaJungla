@@ -38,7 +38,7 @@
     
     <canvas id="unity-canvas" width=960 height=600 style="width: 960px; height: 600px; background: #231F20"></canvas>
      <!-- Recuadro para mensajes del ESP32 -->
-    <div id="messageBox" style="border: 2px solid #000; padding: 15px; width: 320px; margin: 20px auto; font-size: 18px; background-color: #f0f0f0; color: #333;">
+    <div id="messageBox" style="display: block; border: 2px solid black; padding: 15px; width: 320px; margin: 20px auto; font-size: 18px; background-color: #e0e0e0; color: #333;">
       <h3>Mensajes del ESP32</h3>
       <div id="espMessages">Esperando mensajes...</div>
   </div>
@@ -95,8 +95,10 @@ function publishMessage(topic, message) {
             });
 
             mqttClient.on('message', (topic, message) => {
+              console.log("Mensaje recibido en el tópico:", topic); // Log para depuración
                 if (topic === "mensajesESP") {
                     document.getElementById("espMessages").innerText = message.toString();
+                    console.log("Mensaje actualizado en espMessages:", message.toString()); // Log para confirmar
                 }
                 if (unityInstance) {
                     unityInstance.SendMessage('Player', 'OnMessageReceived', message.toString());
